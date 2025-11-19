@@ -30,12 +30,12 @@ const ImpactCalculator: React.FC = () => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch('http://localhost:5001/api/impact/history', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/impact/history`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         setHistory(data.calculations);
@@ -56,13 +56,13 @@ const ImpactCalculator: React.FC = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
+
       if (!token) {
         alert('Please login to save your impact calculation');
         return;
       }
 
-      const response = await fetch('http://localhost:5001/api/impact/calculate', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/impact/calculate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

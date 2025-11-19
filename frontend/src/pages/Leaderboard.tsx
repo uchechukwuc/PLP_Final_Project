@@ -30,7 +30,7 @@ const Leaderboard: React.FC = () => {
   const fetchLeaderboard = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5001/api/gamification/leaderboard?type=${selectedType}&page=${currentPage}&limit=20`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/gamification/leaderboard?type=${selectedType}&page=${currentPage}&limit=20`);
       const data = await response.json();
 
       if (response.ok) {

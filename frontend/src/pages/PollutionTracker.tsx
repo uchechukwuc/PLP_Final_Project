@@ -29,7 +29,7 @@ const PollutionTracker: React.FC = () => {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/reports');
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reports`);
       const data = await response.json();
       setReports(data.reports);
     } catch (error) {
@@ -63,14 +63,14 @@ const PollutionTracker: React.FC = () => {
     try {
       const token = localStorage.getItem('token');
       const formDataObj = new FormData();
-      
+
       Object.keys(data).forEach(key => {
         if (data[key as keyof typeof data]) {
           formDataObj.append(key, data[key as keyof typeof data]);
         }
       });
 
-      const response = await fetch('http://localhost:5001/api/reports', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reports`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -368,7 +368,7 @@ const PollutionTracker: React.FC = () => {
                       {report.images.slice(0, 3).map((image: string, index: number) => (
                         <img
                           key={index}
-                          src={`http://localhost:5001${image}`}
+                          src={`${process.env.REACT_APP_API_URL}${image}`}
                           alt={`Pollution image ${index + 1}`}
                           style={{
                             width: '60px',
