@@ -27,7 +27,7 @@ app.use(
   cors({
     origin: [
       "https://cleanguard.vercel.app",
-     // "http://localhost:3000"
+      "http://localhost:3000"
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
