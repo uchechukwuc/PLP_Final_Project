@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
-import cors from "cors";
 
 // Route files
 const authRoutes = require('./routes/auth');
@@ -86,35 +85,38 @@ app.use((req, res) => {
 });
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://clean:clean123@cleanguard.ivrv28w.mongodb.net/leanGuard?appName=CleanGuard'
+mongoose.connect(process.env.MONGO_URI
 ,{
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
 .then(() => {
   console.log('✅ MongoDB Connected');
-  
-  // Start server
-  const PORT = process.env.PORT || 5001;
-  const server = app.listen(PORT, () => {
-    console.log(`\n${'='.repeat(60)}`);
-    console.log('🌊 CLEANGUARD OCEAN SUSTAINABILITY TRACKER');
-    console.log(`${'='.repeat(60)}`);
-    console.log(`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-    console.log(`📍 API URL: http://localhost:${PORT}/api`);
-    console.log(`🔗 Health Check: http://localhost:${PORT}/api/health`);
-    console.log(`${'='.repeat(60)}\n`);
-  });
 
-  // Handle unhandled promise rejections
-  process.on('unhandledRejection', (err, promise) => {
-    console.log(`Error: ${err.message}`);
-    server.close(() => process.exit(1));
-  });
+  // Start server only in development
+  if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5001;
+    const server = app.listen(PORT, () => {
+      console.log(`\n${'='.repeat(60)}`);
+      console.log('🌊 CLEANGUARD OCEAN SUSTAINABILITY TRACKER');
+      console.log(`${'='.repeat(60)}`);
+      console.log(`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+      console.log(`📍 API URL: http://localhost:${PORT}/api`);
+      console.log(`🔗 Health Check: http://localhost:${PORT}/api/health`);
+      console.log(`${'='.repeat(60)}\n`);
+    });
+
+    // Handle unhandled promise rejections
+    process.on('unhandledRejection', (err, promise) => {
+      console.log(`Error: ${err.message}`);
+      server.close(() => process.exit(1));
+    });
+  }
 })
 .catch(err => {
   console.error('❌ MongoDB connection error:', err.message);
   process.exit(1);
 });
 
+// Export for Vercel serverless functions
 module.exports = app;
