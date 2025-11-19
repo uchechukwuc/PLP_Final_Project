@@ -83,7 +83,8 @@ app.use((req, res) => {
 });
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect('mongodb+srv://clean:clean123@cleanguard.ivrv28w.mongodb.net/leanGuard?appName=CleanGuard'
+,{
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
