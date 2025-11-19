@@ -83,7 +83,7 @@ mongoose
     console.log("MongoDB Connected");
 
     // Start server in ALL environments
-    const PORT = process.env.PORT || 5000;
+    const PORT = process.env.PORT || 5001;
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
     });
