@@ -38,9 +38,12 @@ app.use(
 // Security headers
 app.use(helmet());
 
-// Dev logging middleware
-if (process.env.NODE_ENV === 'production') 
-   app.use(morgan('dev')); 
+// Logging middleware
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+} else {
+  app.use(morgan('dev'));
+}
     
 
 
@@ -95,25 +98,25 @@ mongoose.connect(process.env.MONGO_URI)
 .then(() => {
   console.log('✅ MongoDB Connected');
 
-  // Start server only in development
-  if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 5001;
-    const server = app.listen(PORT, "0.0.0.0", () => {
-      console.log(`\n${'='.repeat(60)}`);
-      console.log('🌊 CLEANGUARD OCEAN SUSTAINABILITY TRACKER');
-      console.log(`${'='.repeat(60)}`);
-      console.log(`🚀 Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  // Start server
+  const PORT = process.env.PORT || 5001;
+  const server = app.listen(PORT, "0.0.0.0", () => {
+    console.log(`\n${'='.repeat(60)}`);
+    console.log('🌊 CLEANGUARD OCEAN SUSTAINABILITY TRACKER');
+    console.log(`${'='.repeat(60)}`);
+    console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+    if (process.env.NODE_ENV !== 'production') {
       console.log(`📍 API URL: http://localhost:${PORT}/api`);
       console.log(`🔗 Health Check: http://localhost:${PORT}/api/health`);
-      console.log(`${'='.repeat(60)}\n`);
-    });
+    }
+    console.log(`${'='.repeat(60)}\n`);
+  });
 
-    // Handle unhandled promise rejections
-    process.on('unhandledRejection', (err, promise) => {
-      console.log(`Error: ${err.message}`);
-      server.close(() => process.exit(1));
-    });
-  }
+  // Handle unhandled promise rejections
+  process.on('unhandledRejection', (err, promise) => {
+    console.log(`Error: ${err.message}`);
+    server.close(() => process.exit(1));
+  });
 })
 .catch(err => {
   console.error('❌ MongoDB connection error:', err.message);
