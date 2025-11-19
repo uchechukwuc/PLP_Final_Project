@@ -5,6 +5,11 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
+// Check for required environment variables
+if (!process.env.MONGO_URI) {
+  console.error('MONGO_URI environment variable is required');
+  process.exit(1);
+}
 
 // Route files
 const authRoutes = require('./routes/auth');
@@ -34,9 +39,15 @@ app.use(
 app.use(helmet());
 
 // Dev logging middleware
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+//if (process.env.NODE_ENV === 'development') {
+// app.use(morgan('dev')); }
+
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 5001;
+    const server = app.listen(PORT, "0.0.0.0", () => {
+    },
+  )};
+
 
 // Rate limiting
 const limiter = rateLimit({
@@ -85,11 +96,7 @@ app.use((req, res) => {
 });
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI
-,{
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(process.env.MONGO_URI)
 .then(() => {
   console.log('✅ MongoDB Connected');
 
