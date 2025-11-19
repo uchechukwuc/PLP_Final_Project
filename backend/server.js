@@ -22,37 +22,43 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ======= FIXED CORS CONFIGURATION =======
+// ------------- CORS FIX HERE -------------------
+const allowedOrigins = [
+  "https://cleanguard.vercel.app",
+  "http://localhost:3000"
+];
+
 app.use(
   cors({
-    origin: [
-      "https://cleanguard.vercel.app",
-      "http://localhost:3000"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed for this origin: " + origin));
+      }
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   })
 );
-// ========================================
+// ------------------------------------------------
 
 app.use(helmet());
 
-// Dev logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
 // Rate limit
-const limiter = rateLimit({
+app.use('/api/', rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 200,
-});
-app.use('/api/', limiter);
+}));
 
-// Static uploads
+// Static files
 app.use('/uploads', express.static('uploads'));
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/seafood', seafoodRoutes);
@@ -73,23 +79,18 @@ app.use((req, res) => {
 
 // GLOBAL ERROR HANDLER
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(err.statusCode || 500).json({
-    success: false,
-    message: err.message || "Server Error",
-  });
+  console.error("🔥 ERROR:", err.message);
+  res.status(500).json({ success: false, message: err.message });
 });
 
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URI)
+// Connect DB + start server
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected");
-
     const PORT = process.env.PORT || 5001;
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+    app.listen(PORT, "0.0.0.0", () =>
+      console.log(`🚀 Server running on port ${PORT}`)
+    );
   })
   .catch((err) => {
     console.error("MongoDB error:", err);
