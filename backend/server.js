@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
+import cors from "cors";
 
 // Route files
 const authRoutes = require('./routes/auth');
@@ -23,11 +24,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Enable CORS
-app.use(cors({
-  origin: "https://cleanguard.vercel.app" ,
-  credentials: true
-}));
-
+app.use(
+  cors({
+    origin: "https://cleanguard.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    credentials: true,
+  })
+);
 // Security headers
 app.use(helmet());
 
