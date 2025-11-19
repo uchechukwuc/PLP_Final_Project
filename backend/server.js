@@ -40,10 +40,8 @@ app.use(helmet());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'production') 
-  { const PORT = process.env.PORT || 5001;
-    const server = app.listen(PORT, "0.0.0.0", () => {
- app.use(morgan('dev')); 
-    })}
+   app.use(morgan('dev')); 
+    
 
 
 // Rate limiting
