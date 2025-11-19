@@ -26,7 +26,7 @@ const Login: React.FC = () => {
     setError('');
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
