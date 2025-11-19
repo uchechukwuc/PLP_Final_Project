@@ -22,14 +22,18 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// CORS
+// ======= FIXED CORS CONFIGURATION =======
 app.use(
   cors({
-    origin: "https://cleanguard.vercel.app",
+    origin: [
+      "https://cleanguard.vercel.app",
+      "http://localhost:3000"
+    ],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
   })
 );
+// ========================================
 
 app.use(helmet());
 
@@ -82,7 +86,6 @@ mongoose
   .then(() => {
     console.log("MongoDB Connected");
 
-    // Start server in ALL environments
     const PORT = process.env.PORT || 5001;
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
