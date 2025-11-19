@@ -96,7 +96,7 @@ mongoose.connect(process.env.MONGO_URI
   // Start server only in development
   if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 5001;
-    const server = app.listen(PORT, () => {
+    const server = app.listen(PORT, "0.0.0.0", () => {
       console.log(`\n${'='.repeat(60)}`);
       console.log('🌊 CLEANGUARD OCEAN SUSTAINABILITY TRACKER');
       console.log(`${'='.repeat(60)}`);
