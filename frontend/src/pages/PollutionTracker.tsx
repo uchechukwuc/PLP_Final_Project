@@ -29,7 +29,7 @@ const PollutionTracker: React.FC = () => {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reports`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reports`);
       const data = await response.json();
       setReports(data.reports);
     } catch (error) {
@@ -70,7 +70,7 @@ const PollutionTracker: React.FC = () => {
         }
       });
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/reports`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reports`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -368,7 +368,7 @@ const PollutionTracker: React.FC = () => {
                       {report.images.slice(0, 3).map((image: string, index: number) => (
                         <img
                           key={index}
-                          src={`${process.env.REACT_APP_API_URL}${image}`}
+                          src={`${import.meta.env.VITE_API_BASE_URL}${image}`}
                           alt={`Pollution image ${index + 1}`}
                           style={{
                             width: '60px',

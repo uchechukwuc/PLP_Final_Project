@@ -27,7 +27,7 @@ const Community: React.FC = () => {
       if (selectedType) params.append('type', selectedType);
       if (selectedCategory) params.append('category', selectedCategory);
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/community?${params}`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/community?${params}`);
       const data = await response.json();
       setPosts(data.posts);
     } catch (error) {
@@ -54,7 +54,7 @@ const Community: React.FC = () => {
         return;
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/community`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/community`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ const Community: React.FC = () => {
         return;
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/community/${postId}/like`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/community/${postId}/like`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

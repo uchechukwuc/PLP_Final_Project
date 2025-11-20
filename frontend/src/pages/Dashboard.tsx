@@ -43,7 +43,7 @@ const Dashboard: React.FC = () => {
 
   const fetchUserStats = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/gamification/stats`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/gamification/stats`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

@@ -30,7 +30,7 @@ const ImpactCalculator: React.FC = () => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/impact/history`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/impact/history`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -62,7 +62,7 @@ const ImpactCalculator: React.FC = () => {
         return;
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/impact/calculate`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/impact/calculate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

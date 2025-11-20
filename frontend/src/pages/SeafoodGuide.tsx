@@ -21,7 +21,7 @@ const SeafoodGuide: React.FC = () => {
       if (selectedCategory) params.append('category', selectedCategory);
       if (selectedRating) params.append('sustainabilityRating', selectedRating);
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/seafood?${params}`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/seafood?${params}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -43,7 +43,7 @@ const SeafoodGuide: React.FC = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/seafood/search/${encodeURIComponent(searchTerm)}`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/seafood/search/${encodeURIComponent(searchTerm)}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
