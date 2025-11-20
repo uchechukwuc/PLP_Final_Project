@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
-// Route files
+// Routes
 const authRoutes = require('./routes/auth');
 const reportRoutes = require('./routes/reports');
 const seafoodRoutes = require('./routes/seafood');
@@ -15,47 +15,35 @@ const impactRoutes = require('./routes/impact');
 const gamificationRoutes = require('./routes/gamification');
 const communityRoutes = require('./routes/community');
 
-// Initialize express app
 const app = express();
 
-// Body parser
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ------------- CORS FIX HERE -------------------
-const allowedOrigins = [
-  "https://cleanguard.vercel.app",
-  "http://localhost:3000"
-];
-
+// CORS FIXED
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS not allowed for this origin: " + origin));
-      }
-    },
+    origin: [
+      "https://cleanguard.vercel.app",
+      "http://localhost:3000"
+    ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   })
 );
-// ------------------------------------------------
 
+// Security
 app.use(helmet());
 
+// Logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// Rate limit
-app.use('/api/', rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 200,
-}));
+// Rate Limit
+app.use('/api/', rateLimit({ windowMs: 15 * 60 * 1000, max: 200 }));
 
-// Static files
+// Static
 app.use('/uploads', express.static('uploads'));
 
 // API Routes
@@ -67,34 +55,31 @@ app.use('/api/impact', impactRoutes);
 app.use('/api/gamification', gamificationRoutes);
 app.use('/api/community', communityRoutes);
 
-// Health check
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ success: true, message: "OK" });
-});
+// Health
+app.get('/api/health', (req, res) => res.json({ success: true }));
 
-// 404
+// 404 Handler
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });
 
-// GLOBAL ERROR HANDLER
+// Error Handler
 app.use((err, req, res, next) => {
-  console.error("🔥 ERROR:", err.message);
-  res.status(500).json({ success: false, message: err.message });
+  console.error(err.message);
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Server Error",
+  });
 });
 
-// Connect DB + start server
-mongoose.connect(process.env.MONGO_URI)
+// DB + Server
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB Connected");
     const PORT = process.env.PORT || 5001;
-    app.listen(PORT, "0.0.0.0", () =>
-      console.log(`🚀 Server running on port ${PORT}`)
-    );
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
   })
-  .catch((err) => {
-    console.error("MongoDB error:", err);
-    process.exit(1);
-  });
+  .catch((err) => console.error("MongoDB error:", err));
 
 module.exports = app;
