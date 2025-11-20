@@ -50,7 +50,7 @@ const OceanHealthMap: React.FC<OceanHealthMapProps> = ({
   const fetchReports = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/reports/map');
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/reports/map`);
       const data = await response.json();
       setReports(data.reports || []);
     } catch (error) {

@@ -97,8 +97,8 @@ const impactCalculationSchema = new mongoose.Schema({
     }],
     weeklyGoals: [{
         habit: String,
-        current: Number,
-        target: Number,
+        current: mongoose.Schema.Types.Mixed,
+        target: mongoose.Schema.Types.Mixed,
         unit: String
     }],
     monthlyProgress: [{
