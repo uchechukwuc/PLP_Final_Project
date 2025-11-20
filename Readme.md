@@ -1,6 +1,10 @@
-# 🌊 CleanGuard - Ocean Sustainability Tracker
+https://cleanguard.vercel.app/
 
-A comprehensive full-stack web application for tracking ocean pollution, promoting sustainable seafood choices, and gamifying environmental conservation efforts.
+# 🌊 CleanGuard - Ocean Sustainability Tracker (Life Under the Water)
+
+A comprehensive full-stack web application designed to monitor and address ocean pollution while promoting sustainable seafood choices. The platform allows users to track pollution levels in various bodies of water, including plastic waste, chemical contaminants, and other harmful substances affecting marine ecosystems. Through a detailed dashboard, users can access real-time data, visualize trends, and gain insights into the health of marine life. The app also guides consumers in making environmentally responsible seafood choices by providing information on sustainable fishing practices and eco-friendly seafood sources.
+
+In addition, the application incorporates gamification features to encourage active participation in environmental conservation. Users can earn points, badges, and rewards for logging observations, reporting pollution incidents, completing sustainability challenges, or contributing to educational campaigns. By combining data monitoring, consumer guidance, and interactive incentives, the app empowers individuals, communities, and organizations to actively protect and preserve marine ecosystems and the life under water." 
 
 ## 📋 Table of Contents
 
@@ -233,8 +237,8 @@ cleanguard-ocean-tracker/
 
 ### Step 1: Clone Repository
 ```bash
-git clone https://github.com/yourusername/cleanguard-ocean-tracker.git
-cd cleanguard-ocean-tracker
+git clone https://github.com/uchechukwuc/PLP_Final_Project.git
+
 ```
 
 ### Step 2: Install Dependencies
@@ -243,7 +247,7 @@ cd cleanguard-ocean-tracker
 npm install
 
 # Install client dependencies
-cd client
+cd Frontend
 npm install
 cd ..
 ```
@@ -263,7 +267,7 @@ NODE_ENV=development
 PORT=5001
 
 # MongoDB
-MONGODB_URI=mongodb://localhost:27017/cleanguard
+MONGODB_URI=your mongodb uri
 
 # JWT
 JWT_SECRET=your_super_secret_key_here
@@ -271,7 +275,7 @@ JWT_EXPIRE=30d
 
 # API Keys
 FISHBASE_API_KEY=your_key_here
-MARINE_API_KEY=your_key_here
+
 
 # File Upload
 MAX_FILE_SIZE=5000000
@@ -322,12 +326,12 @@ This runs:
 
 **Backend only:**
 ```bash
-npm run server
+npm run dev
 ```
 
 **Frontend only:**
 ```bash
-npm run client
+npm run dev
 ```
 
 ### Production Build:
@@ -660,7 +664,7 @@ MIT License - See LICENSE file
 
 ## 📞 Support
 
-- Email: support@cleanguard.org
+- Email: uchechukwuc@gmail.com
 - Website: https://cleanguard.org
 - Twitter: @CleanGuardApp
 
